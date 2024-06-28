@@ -9,14 +9,12 @@
   justify-content: center;
   align-items: center;
 }
-
 h1 {
   color: #2c3e50;
   margin-bottom: 20px;
   font-size: 2rem;
   font-family: 'Trebuchet MS', sans-serif;
 }
-
 .chat-container {
   flex: 1;
   overflow-y: auto;
@@ -32,24 +30,20 @@ h1 {
   display: flex;
   flex-direction: column;
 }
-
 .message {
   padding: 15px;
   margin: 10px 0;
   border-radius: 10px;
   font-family: 'Verdana', sans-serif;
 }
-
 .message.user {
   background-color: #d1f2eb;
   text-align: left;
 }
-
 .message.bot {
   background-color: #f9ebea;
   text-align: left;
 }
-
 .input-container {
   display: flex;
   width: 80%;
@@ -57,7 +51,6 @@ h1 {
   justify-content: center;
   align-items: center;
 }
-
 input[type="text"] {
   flex: 1;
   padding: 10px;
@@ -65,7 +58,6 @@ input[type="text"] {
   border-radius: 5px;
   margin-right: 10px;
 }
-
 button {
   padding: 10px 20px;
   background-color: #27ae60;
@@ -74,7 +66,6 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
-
 button:hover {
   background-color: #229954;
 }
