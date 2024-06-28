@@ -1,70 +1,53 @@
 import React, { useState } from 'react';
 import './App.css';
-import { Configuration, OpenAIApi } from 'openai';
+import axios from 'axios';
 
 const App = () => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
 
-  const configuration = new Configuration({
-    apiKey: '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',
-  });
-  
-  const openai = new OpenAIApi(configuration);
+  const apiKey = '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';
 
-  async function main(a1) {  
-    return {
-      "id": "chatcmpl-6sHnRLzMVcNnTxkP7Up7Jv0AJ3eFZ",
-      "object": "chat.completion",
-      "created": 1689924234,
-      "model": "gpt-3.5-turbo",
-      "choices": [
+  const main = async (a1) => {
+    try {
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
         {
-          "message": {
-            "role": "assistant",
-            "content": "This is a test response from the chatbot."
+          model: 'gpt-3.5-turbo',
+          messages: [{ role: 'user', content: a1 }],
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`,
           },
-          "finish_reason": "stop",
-          "index": 0
         }
-      ],
-      "usage": {
-        "prompt_tokens": 9,
-        "completion_tokens": 7,
-        "total_tokens": 16
-      }
+      );
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      console.error('Error in main function:', error);
+      throw error;
     }
+  };
 
-    const response = await openai.createChatCompletion({  
-      model: 'gpt-3.5-turbo',
-      messages: [{ role: "user", content: a1 }],
-      stream: true,
-    });
-
-    let botResponse = '';
-
-    for await (const chunk of response.data) {  
-      const content = chunk.choices[0]?.delta?.content || '';
-      botResponse += content;
-    }
-
-    return botResponse;
-  }
-  
   const handleSend = async () => {
     if (input.trim() === '') return;
-
     const newMessages = [...messages, { sender: 'user', text: input }];
     setMessages(newMessages);
     setInput('');
 
     try {
-      const response = await main(input);  
-      const botResponse = response.choices[0].message.content.trim();  
-      const botMessage = { sender: 'bot', text: botResponse };  
-      setMessages([...newMessages, botMessage]);
-    } 
-    catch (error) {
+      const response = await main(input);
+      console.log('API Response:', response);
+      if (response && response.choices && response.choices[0] && response.choices[0].message) {
+        const botResponse = response.choices[0].message.content.trim();
+        const botMessage = { sender: 'bot', text: botResponse };
+        setMessages([...newMessages, botMessage]);
+      } else {
+        throw new Error('Invalid response format');
+      }
+    } catch (error) {
       console.error('Error sending message:', error.response ? error.response.data : error.message);
       const botMessage = { sender: 'bot', text: 'Sorry, something went wrong. Please try again later.' };
       setMessages([...newMessages, botMessage]);
