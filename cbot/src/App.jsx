@@ -6,7 +6,7 @@ const App = () => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
 
-  const apiKey = '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';
+  const apiKey = '';
 
   const main = async (a1) => {
     try {
